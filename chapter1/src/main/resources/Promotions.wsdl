@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions name="Promotions" targetNamespace="http://computing.cloud.course/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://computing.cloud.course/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
+  <wsdl:types>
+<xs:schema xmlns:tns="http://computing.cloud.course/" xmlns:xs="http://www.w3.org/2001/XMLSchema" attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="http://computing.cloud.course/">
+  <xs:complexType name="customerInfo">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="name" type="xs:string"/>
+      <xs:element name="age" type="xs:int"/>
+      <xs:element minOccurs="0" name="phone" type="xs:string"/>
+      <xs:element minOccurs="0" name="shipping" type="tns:shippingType"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="promotion">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="start_date" type="xs:dateTime"/>
+      <xs:element minOccurs="0" name="end_date" type="xs:dateTime"/>
+      <xs:element name="percentage_discount" type="xs:double"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="product_codes" nillable="true" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:simpleType name="shippingType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="REGULAR"/>
+      <xs:enumeration value="TWODAY"/>
+      <xs:enumeration value="ONEDAY"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="getPromotions" type="tns:getPromotions"/>
+  <xs:complexType name="getPromotions">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="arg0" type="tns:customerInfo"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="getPromotionsResponse" type="tns:getPromotionsResponse"/>
+  <xs:complexType name="getPromotionsResponse">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="return" type="tns:promotion"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="applyPromotionToSale" type="tns:applyPromotionToSale"/>
+  <xs:complexType name="applyPromotionToSale">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="arg0" type="tns:customerInfo"/>
+      <xs:element minOccurs="0" name="arg1" type="tns:promotion"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="applyPromotionToSaleResponse" type="tns:applyPromotionToSaleResponse"/>
+  <xs:complexType name="applyPromotionToSaleResponse">
+    <xs:sequence>
+      <xs:element name="return" type="xs:boolean"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>
+  </wsdl:types>
+  <wsdl:message name="getPromotions">
+    <wsdl:part name="parameters" element="tns:getPromotions">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="applyPromotionToSale">
+    <wsdl:part name="parameters" element="tns:applyPromotionToSale">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="applyPromotionToSaleResponse">
+    <wsdl:part name="parameters" element="tns:applyPromotionToSaleResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getPromotionsResponse">
+    <wsdl:part name="parameters" element="tns:getPromotionsResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="PromotionsPortType">
+    <wsdl:operation name="getPromotions">
+      <wsdl:input name="getPromotions" message="tns:getPromotions">
+    </wsdl:input>
+      <wsdl:output name="getPromotionsResponse" message="tns:getPromotionsResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="applyPromotionToSale">
+      <wsdl:input name="applyPromotionToSale" message="tns:applyPromotionToSale">
+    </wsdl:input>
+      <wsdl:output name="applyPromotionToSaleResponse" message="tns:applyPromotionToSaleResponse">
+    </wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="PromotionsSoapBinding" type="tns:PromotionsPortType">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="getPromotions">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="getPromotions">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getPromotionsResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="applyPromotionToSale">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="applyPromotionToSale">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="applyPromotionToSaleResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="Promotions">
+    <wsdl:port name="PromotionsPort" binding="tns:PromotionsSoapBinding">
+      <soap:address location="http://localhost:9090/PromotionsPort"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>
