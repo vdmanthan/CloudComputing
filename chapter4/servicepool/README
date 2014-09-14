@@ -1,0 +1,86 @@
+/*                                                                                                                   * Licensed under Apache Software Foundation V2 license agreement.  
+ * See the NOTICE file distributed with this work for additional 
+ * information regarding copyright ownership.  The ASF licenses this 
+ * file to you under the Apache License, Version 2.0 (the                                                                                                                                   
+ * "License"); you may not use this file except in compliance                                                        * with the License.  You may obtain a copy of the License at                                                                                                                          
+ *                                                                                                                                                                                      
+ *  http://www.apache.org/licenses/LICENSE-2.0                                                                                                                                         
+ *                                                                                                                                                                                      
+ * Unless required by applicable law or agreed to in writing,                                                                                                                          
+ * software distributed under the License is distributed on an                                                                                                                          
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY                                                                                                                              
+ * KIND, either express or implied.  See the License for the                                                                                                                            
+ * specific language governing permissions and limitations                                                                                                                              
+ * under the License.
+ *
+ *
+ * Copyright(c) 2012-2014, Vijay Dialani. ALL RIGHTS RESERVED.
+ *                                                                                                                                                                 
+ */
+ 
+ 
+ 
+This project demonstrates the use of Restful JAX-RS in
+conjunction with HAProxy. 
+
+As a first step download and install HAProxy for your
+operating system. Details can be found here:
+
+http://www.haproxy.org/#down
+
+HAProxy supports the following platforms
+
+Linux 2.4 on x86, x86_64, Alpha, Sparc, MIPS, PARISC
+Linux 2.6 / 3.x on x86, x86_64, ARM, Sparc, PPC64
+Solaris 8/9 on UltraSPARC 2 and 3
+Solaris 10 on Opteron and UltraSPARC
+FreeBSD 4.10 - 10 on x86
+OpenBSD 3.1 to -current on i386, amd64, macppc, alpha, sparc64 and VAX (check the ports)
+AIX 5.1 - 5.3 on Power™ architecture 
+
+For installation on Mac use instructions at : 
+http://nepalonrails.tumblr.com/post/9674428224/setup-haproxy-for-development-environment-on-mac-osx
+
+If you are using windows, install a Virtual machine with one of the above mentioned
+operating systems and checkout the git repository on the VM and proceed with the
+instructions below.
+
+
+To build the project use:
+	mvn clean test
+You need to run two server instances 
+one at port 9001 and second at 9002
+To run the Servers use the commands:
+	mvn exec:java -Dexec.args=9001
+	mvn exec:java -Dexec.args=9002
+To test the individual services are running use the browser 
+to visit 
+	http://localhost:9001/myapp/colo
+	http://localhost:9002/myapp/colo
+At this point you need to start the HAProxy installation
+using the config file haproxy.cfg included with this code
+package
+
+This will make the service available with the URI
+	http://localhost:9000/myapp/colo
+Open a new browser and check the response the service
+will provide you a response like
+
+	Request was served by : http://localhost:9001/myapp/colo/
+	or
+	Request was served by : http://localhost:9002/myapp/colo/
+
+depending upon which service has handled the request for the server.
+
+To stress test the system use the following command
+
+	mvn -Ptest
+	
+this command will run a number of http calls to the server and 
+will display the number of responses from each service.
+
+You can also check out the HAProxy dashboard at http://localhost:9100/
+
+
+ 
+
