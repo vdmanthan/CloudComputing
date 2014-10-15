@@ -74,6 +74,33 @@ public class ImageService {
 			}
 		}).build();
 	}
+
+    @GET
+    @Path("upload")
+    @Produces("text/html")
+    public Response uploadPage() {
+        InputStream pageStream = ImageService.class.getResourceAsStream("/upload.html");
+        if(pageStream == null) {
+            return Response.serverError().build();
+        }
+        final byte[] page;
+        try {
+            page = IOUtils.toByteArray(pageStream);
+        } catch (IOException e) {
+            return  Response.serverError().build();
+        }
+
+        return Response.ok().entity(new StreamingOutput() {
+                                @Override
+                                public void write(OutputStream output) throws
+                                        IOException, WebApplicationException {
+
+                                    output.write(page);
+                                    output.flush();
+                                }
+                    }
+        ).build();
+    }
 	
 	@GET
 	@Path("{name}")
@@ -88,7 +115,7 @@ public class ImageService {
     }
 
 	@POST
-	@Consumes("image/jpeg, image/jpg")
+	@Consumes("image/jpeg")
 	public Response upload(InputStream in,
 			@HeaderParam("Content-Type") String fileType,
 			@HeaderParam("Content-Length") long fileSize) throws IOException {
@@ -108,6 +135,7 @@ public class ImageService {
 		} else {
 			fileName += ".png";
 		}
+        System.out.println("Set new filename to " + fileName);
 
 		File directory = new File("images");
 		if (!directory.isDirectory()) {
